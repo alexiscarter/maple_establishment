@@ -3,6 +3,8 @@
 # Load libraries and data points
 library(sp)
 library(raster)
+library(GISTools)  
+library(maps)  
 tmp <- read.csv('map/GPS_megantic.csv', sep = ';')
 
 meg <- SpatialPointsDataFrame(
@@ -32,4 +34,6 @@ plot(t(box), type = 'n', asp = 1, xlab = 'Longitude (°)', ylab = 'Latitude (°)
 contour(ra_elv, add=T, nlevels = 10, labcex = 1)
 plot(meg, add=T, pch = c(15, 19, 17)[tmp$forest], cex= 1, col = 'black')
 text(meg, labels = tmp$block, cex= 0.7, pos = 3)
+north.arrow(xb=-71.1045, yb=45.445, len=0.0005, lab="N") 
+map.scale(x=-71.107, y=45.442, ratio=FALSE, relwidth=0.1) 
 # saved in pdf protrait 5*7in

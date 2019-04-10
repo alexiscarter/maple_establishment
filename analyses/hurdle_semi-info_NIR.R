@@ -1,4 +1,4 @@
-### Modelling of survival and biomass ofsugar maple seedlings 
+### Modelling of survival and biomass of sugar maple seedlings 
 # Non-irradiated soil only
 # semi-informativepriors for betas for Gamma and Bernoulli
 
@@ -13,7 +13,7 @@ library(ggpubr)
 
 load("data/traits_as.rdata")
 
-# Cleaning ####
+# Manipulation ####
 Use<-c("id" ,"species", "forest", "block" ,"treatment", "total.w")
 trait_as<-traits_as[, names(traits_as) %in% Use]
 
@@ -144,6 +144,7 @@ nir.semi.info <- jags( data        = JAGS.data_full,
 # /!\ Can be long to run
 nir.semi.info2 <- update(nir.semi.info, n.iter = 500000, n.thin = 10)
 
+# Extract info
 out.nir <-nir.semi.info2$BUGSoutput
 
 # check if the mixing is good ####
