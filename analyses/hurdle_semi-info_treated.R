@@ -261,9 +261,9 @@ Hurdle_F<- ggplot(data = ExpY.mcmc.F, aes(x = Forest,  y = value)) +
   stat_summary(fun.y=median, geom="point", shape=23, size=2)+
   theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1)) +
   ylim(0,1.6) +
-  labs(x = "Soil origin", y = "Dry mass (including survival, g)")
+  labs(x = "Soil origin", y = "Performance (g)")
 
-# By treatment
+## By treatment
 ExpY.mcmc.T <- ExpY.mcmc %>%
   t() %>%
   as.data.frame() %>%
@@ -296,15 +296,7 @@ Hurdle_O <- ggplot(data = ExpY.mcmc.O, aes(x = Treatment,  y = value)) +
   theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1)) +
   scale_x_discrete(labels=c("Temperate inoculant"="Temperate","Mixed inoculant"="Mixed","Boreal inoculant"="Boreal")) +
   ylim(0,1.6) +
-  labs(x = "Inoculum source", y = "Dry mass (g)")
-
-inoc_names <- c("Temperate inoculant" = "Temperate inoculum", "Mixed inoculant" = "Mixed-soil inoculum", "Boreal inoculant" = "Boreal inoculum", Sterile = 'Sterile')
-Hurdle_O_byInoc <- ggplot(data = ExpY.mcmc.O, aes(x = Forest,  y = value)) +
-  geom_violin()+
-  facet_wrap(~Treatment, labeller = as_labeller(inoc_names), ncol = 4, scales = "free") + 
-  stat_summary(fun.y=median, geom="point", shape=23, size=2)+
-  theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1)) +
-  labs(x = "Soil origin", y = "Dry mass (g)")
+  labs(x = "Inoculum source", y = "Performance (g)")
 
 # Bernoulli posterior ####
 # format data for ggplot and select 90% by forest
@@ -412,15 +404,7 @@ Gamm_O<- ggplot(data = mu.mcmc.O, aes(x = Treatment,  y = value)) +
   ylim(0,4) +
   labs(x = "Inoculum source", y = "Dry mass of survivors (g)")
 
-Hurdle_O
-
-all_IR<-ggarrange(Bern_F, Bern_T, Bern_O,
-                   Gamm_F, Gamm_T, Gamm_O,
-                   Hurdle_F, Hurdle_T, Hurdle_O,
-                   ncol=3, nrow=3, labels=c("a", "b", "c", "d", "e", "f", "g", "h", "i"),
-                   common.legend = T, widths =c(1,1,3))
-
-# Coefficient of Variation ##
+# Coefficient of Variation ####
 # Abiotic
 sd(c(expH[4,4], expH[8,4], expH[12,4]))/mean(c(expH[4,4], expH[8,4], expH[12,4]))*100
 

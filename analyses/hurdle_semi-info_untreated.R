@@ -247,7 +247,7 @@ Hurdle<- ggplot(data = ExpY.mcmc.df, aes(x = Soil,  y = value)) +
   geom_violin()+
   stat_summary(fun.y=median, geom="point", shape=23, size=2)+
   theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1)) +
-  labs(x = "Forest type", y = "Dry mass (including survival, g)")
+  labs(x = "Forest type", y = "Performance (g)")
 
 ## Gamma posterior
 ## format data for ggplot and select 90%
@@ -280,6 +280,3 @@ Bern<- ggplot(data = Pi.mcmc.df, aes(x = Soil,  y = value)) +
   stat_summary(fun.y=median, geom="point", shape=23, size=2)+
   theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1)) +
   labs(x = "", y = "Survival probability")
-
-plot.all<-ggarrange(Bern, Gamm, Hurdle,
-                    ncol=1, nrow=3, labels=c("a", "b", "c")) 

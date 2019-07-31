@@ -328,6 +328,59 @@ endo_4<-merge(endo_3, Count_id, by=c("forest", "treatment"))
 ## obtain ratio of colonization normalized by number of survivors
 endo_4$norm_colo<-(endo_4$colonisation*((endo_4$n)/10))
 
+
+# Figure with treated and untreated samples
+colo_hyp_irn<-ggplot(hyp_data_4, mapping=aes(x= treatment, y=colonisation)) +
+  facet_grid(~forest, labeller = as_labeller(soil_names)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "bar", position="dodge", width = .8, fun.args=list(conf.int=0)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position="dodge", width = .3, fun.args=list(conf.int=.68)) +
+  labs(x = "Inoculum source", y = "Hyphal colonization intensity (%)") +
+  scale_x_discrete(labels=c("Temperate inoculant"="Temperate","Mixed inoculant"="Mixed","Boreal inoculant"="Boreal")) +
+  theme_bw() + theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1), axis.title = element_text(size=10), strip.text.x = element_text(size=10))
+
+colo_hyp_irnn<-ggplot(hyp_data_4, mapping=aes(x= treatment, y=colonisation)) +
+  facet_grid(~forest, labeller = as_labeller(soil_names)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "bar", position="dodge", width = .8, fun.args=list(conf.int=0)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position="dodge", width = .3, fun.args=list(conf.int=.68)) +
+  labs(x = "Inoculum source", y = "Hyphae") +
+  scale_x_discrete(labels=c("Temperate inoculant"="Temperate","Mixed inoculant"="Mixed","Boreal inoculant"="Boreal")) +
+  theme_bw() + theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1), axis.title = element_text(size=10), strip.text.x = element_text(size=10))
+
+colo_coil_irn<-ggplot(coil_4, mapping=aes(x= treatment, y=colonisation, cex.main=0.5 )) +
+  facet_grid(~forest, labeller = as_labeller(soil_names)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "bar", position="dodge", width = .8, fun.args=list(conf.int=0)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position="dodge", width = .3, fun.args=list(conf.int=.68)) +
+  labs(x = "Inoculum source", y = "Coil") +
+  scale_x_discrete(labels=c("Temperate inoculant"="Temperate","Mixed inoculant"="Mixed","Boreal inoculant"="Boreal")) +
+  theme_bw() + theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1), axis.title = element_text(size=10), strip.text.x = element_text(size=10))
+
+colo_arb_irn<-ggplot(arb_4, mapping=aes(x= treatment, y=colonisation, cex.main=0.5 )) +
+  facet_grid(~forest, labeller = as_labeller(soil_names)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "bar", position="dodge", width = .8, fun.args=list(conf.int=0)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position="dodge", width = .3, fun.args=list(conf.int=.68)) +
+  labs(x = "Inoculum source", y = "Arbuscules") +
+  scale_x_discrete(labels=c("Temperate inoculant"="Temperate","Mixed inoculant"="Mixed","Boreal inoculant"="Boreal")) +
+  theme_bw() + theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1), axis.title = element_text(size=10), strip.text.x = element_text(size=10))
+
+colo_ves_irn<-ggplot(ves_4, mapping=aes(x= treatment, y=colonisation, cex.main=0.5 )) +
+  facet_grid(~forest, labeller = as_labeller(soil_names)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "bar", position="dodge", width = .8, fun.args=list(conf.int=0)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position="dodge", width = .3, fun.args=list(conf.int=.68)) +
+  labs(x = "Inoculum source", y = "Vesicles") +
+  scale_x_discrete(labels=c("Temperate inoculant"="Temperate","Mixed inoculant"="Mixed","Boreal inoculant"="Boreal")) +
+  theme_bw() + theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1), axis.title = element_text(size=10), strip.text.x = element_text(size=10))
+
+colo_endo_irn<-ggplot(endo_4, mapping=aes(x= treatment, y=colonisation, cex.main=0.5 )) +
+  facet_grid(~forest, labeller = as_labeller(soil_names)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "bar", position="dodge", width = .8, fun.args=list(conf.int=0)) +
+  stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position="dodge", width = .3, fun.args=list(conf.int=.68)) +
+  labs(x = "Inoculum source", y = "Endophytes") +
+  scale_x_discrete(labels=c("Temperate inoculant"="Temperate","Mixed inoculant"="Mixed","Boreal inoculant"="Boreal")) +
+  theme_bw() + theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1), axis.title = element_text(size=10), strip.text.x = element_text(size=10))
+
+all_irn <- ggarrange(colo_arb_irn, colo_coil_irn, colo_hyp_irnn, colo_ves_irn, colo_endo_irn,
+                     ncol=1, nrow=5, labels=c("a", "b", "c", "d", "e"))  
+
 ## Keep only untreated samples (experiment 1)
 hyp_nir <- hyp_data_4 %>% subset(treatment == "Untreated")
 coil_nir <- coil_4 %>% subset(treatment == "Untreated")
@@ -343,7 +396,7 @@ ves_4 <- ves_4 %>% subset(!treatment == "Untreated")
 endo_4 <- endo_4 %>% subset(!treatment == "Untreated")
 
 
-## PLOTS on observed data (Experiment 2) #### 
+## Figures on observed data (Experiment 2) #### 
 soil_names <- c(Temperate = "Temperate soil origin", Mixed = "Mixed soil origin", Boreal = "Boreal soil origin")
 #### Hyphae
 colo_hyp<-ggplot(hyp_data_4, mapping=aes(x= treatment, y=colonisation)) +
@@ -460,7 +513,7 @@ colo_endo_forest<-ggplot(endo_4, mapping=aes(x= forest, y=colonisation)) +
   scale_x_discrete(labels=c("Temperate forest"="Temperate","Mixed forest"="Mixed","Boreal forest"="Boreal")) +
   theme_bw() + theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1), axis.title = element_text(size=10), strip.text.x = element_text(size=10))
 
-## Plots, only untreated data (experiment 1) ####
+## Figures, only untreated data (experiment 1) ####
 colo_arb_nir <-ggplot(arb_nir, mapping=aes(x= forest, y=colonisation, cex.main=0.5 )) +
   stat_summary(fun.data = mean_cl_boot, geom = "errorbar", position="dodge", width = .3, fun.args=list(conf.int=.68)) +
   stat_summary(fun.data = mean_cl_boot, geom = "bar", position="dodge", width = .8, fun.args=list(conf.int=0)) +
