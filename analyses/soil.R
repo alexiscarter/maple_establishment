@@ -6,7 +6,7 @@ library(nlme)
 library(emmeans)
 library(ggpubr)
 
-load('data/soil.rdata')
+soil <- read.csv('data/soil.csv')
 
 # plot settings
 soil_names <- c(FT = "Temperate forest soil", FM = "Mixed forest soil", FB = "Boreal forest soil")
