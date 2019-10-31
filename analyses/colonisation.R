@@ -7,7 +7,8 @@ library(plyr)
 library(dplyr)
 library(ggpubr)
 
-load("data/colo.rdata")
+load('data/colo.rdata')
+# colo <- read.csv('data/colo.csv') # all columns should be factors
 
 ## Create length columns per categories ####
 ## create Length vector per observation (m)
@@ -330,6 +331,8 @@ endo_4$norm_colo<-(endo_4$colonisation*((endo_4$n)/10))
 
 
 # Figure with treated and untreated samples
+soil_names <- c(Temperate = "Temperate soil origin", Mixed = "Mixed soil origin", Boreal = "Boreal soil origin")
+
 colo_hyp_irn<-ggplot(hyp_data_4, mapping=aes(x= treatment, y=colonisation)) +
   facet_grid(~forest, labeller = as_labeller(soil_names)) +
   stat_summary(fun.data = mean_cl_boot, geom = "bar", position="dodge", width = .8, fun.args=list(conf.int=0)) +

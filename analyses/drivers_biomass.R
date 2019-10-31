@@ -8,9 +8,9 @@ library(brmstools)
 library(tidybayes)
 library(ggpubr)
 
-load('data/colo_as.rdata')
-load('data/traits_as.rdata')
-load('data/soil.rdata')
+colo_as <- read.csv('data/colo_as.csv')
+traits_as <- read.csv('data/traits_as.csv')
+soil <- read.csv('data/soil.csv')
 
 ## Colonization variable ####
 colo_w_mod <- colo_as %>% 
