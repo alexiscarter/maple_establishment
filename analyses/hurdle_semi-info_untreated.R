@@ -11,7 +11,7 @@ library(lattice)
 library(ggplot2)
 library(ggpubr)
 
-load("data/traits_as.rdata")
+traits_as <- read.csv('data/traits_as.csv')
 
 # Manipulation ####
 Use<-c("id" ,"species", "forest", "block" ,"treatment", "total.w")
