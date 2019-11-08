@@ -1,4 +1,4 @@
-#### Analysis of soil data from Mégantic
+## Analysis of soil data from sampling plots
 
 ## Load packages and data ####
 library(ggplot2)
@@ -8,15 +8,14 @@ library(ggpubr)
 
 soil <- read.csv('data/soil.csv')
 
-# plot settings
+## plotting settings
 soil_names <- c(FT = "Temperate forest soil", FM = "Mixed forest soil", FB = "Boreal forest soil")
 theme_set(theme_bw())
 
-## Keep only H, Ae, and B for cations analysis (L and F not analyzed)
+## Keep only H, Ae, and B for cations analyses (L and F not analyzed)
 soil.cat <- soil[soil$horizon %in% c('H', 'Ae', 'B'), ]
 
-## Full models ####
-
+## Modeling ####
 ## pH ####
 mod.ph1 <- lme(pH.CaCl2 ~ forest*horizon, random = ~ 1|block,
               method = 'REML',
@@ -25,7 +24,7 @@ anova(mod.ph1)
 plot(mod.ph1)
 qqnorm(resid(mod.ph1)); qqline(resid(mod.ph1))
 
-## forest*horizon
+## Interaction between forest and horizon
 ph.forest.horiz <- emmeans(mod.ph1, pairwise ~ forest*horizon, adjust = "tukey")
 mult.ph.forest.horiz <- CLD(ph.forest.horiz, alpha=0.05, Letters=letters, adjust="tukey", reversed = TRUE)
 plot.mult.ph.forest.horiz <- ggplot(mult.ph.forest.horiz, aes(x = horizon, y = emmean)) + 
@@ -34,7 +33,7 @@ plot.mult.ph.forest.horiz <- ggplot(mult.ph.forest.horiz, aes(x = horizon, y = e
   facet_grid(~forest, labeller = as_labeller(soil_names))+
   labs(x="Horizons", y= expression(paste("pH (in CaCl"[2],")")))
 
-## forest
+## Forest
 ph.forest <- emmeans(mod.ph1, pairwise ~ forest, adjust = "tukey")
 mult.ph.forest <- CLD(ph.forest, alpha=0.05, Letters=letters, adjust="tukey", reversed = TRUE)
 plot.mult.ph.forest <- ggplot(mult.ph.forest, aes(x = forest, y = emmean)) + 
@@ -52,7 +51,7 @@ anova(mod.ecec1)
 plot(mod.ecec1)
 qqnorm(resid(mod.ecec1)); qqline(resid(mod.ecec1))
 
-## forest*horizon
+## Interaction between forest and horizon
 ecec.forest.horiz <- emmeans(mod.ecec1, pairwise ~ forest*horizon, adjust = "tukey")
 mult.ecec.forest.horiz <- CLD(ecec.forest.horiz, alpha=0.05, Letters=letters, adjust="tukey", reversed = TRUE)
 plot.mult.ecec.forest.horiz <- ggplot(mult.ecec.forest.horiz, aes(x = horizon, y = emmean)) + 
@@ -79,7 +78,7 @@ anova(mod.CN3)
 plot(mod.CN3)
 qqnorm(resid(mod.CN3)); qqline(resid(mod.CN3))
 
-## forest*horizon
+## Interaction between forest and horizon
 cn.forest.horiz <- emmeans(mod.CN3, pairwise ~ forest*horizon, adjust = "tukey")
 mult.cn.forest.horiz <- CLD(cn.forest.horiz, alpha=0.05, Letters=letters, adjust="tukey", reversed = TRUE)
 plot.mult.cn.forest.horiz <- ggplot(mult.cn.forest.horiz, aes(x = horizon, y = emmean)) + 
@@ -106,7 +105,7 @@ anova(mod.tp2)
 plot(mod.tp2)
 qqnorm(resid(mod.tp2)); qqline(resid(mod.tp2))
 
-## forest*horizon
+## Interaction between forest and horizon
 tp.forest.horiz <- emmeans(mod.tp2, pairwise ~ forest*horizon, adjust = "tukey")
 mult.tp.forest.horiz <- CLD(tp.forest.horiz, alpha=0.05, Letters=letters, adjust="tukey", reversed = TRUE)
 plot.mult.tp.forest.horiz <- ggplot(mult.tp.forest.horiz, aes(x = horizon, y = emmean)) + 
@@ -133,7 +132,7 @@ anova(mod.bp2)
 plot(mod.bp2)
 qqnorm(resid(mod.bp2)); qqline(resid(mod.bp2))
 
-## forest*horizon
+## Interaction between forest and horizon
 bp.forest.horiz <- emmeans(mod.bp2, pairwise ~ forest*horizon, adjust = "tukey")
 mult.bp.forest.horiz <- CLD(bp.forest.horiz, alpha=0.05, Letters=letters, adjust="tukey", reversed = TRUE)
 plot.bp.mult.forest.horiz <- ggplot(mult.bp.forest.horiz, aes(x = horizon, y = emmean)) + 
@@ -160,7 +159,7 @@ anova(mod.bs2)
 plot(mod.bs2)
 qqnorm(resid(mod.bs2)); qqline(resid(mod.bs2))
 
-## forest*horizon
+## Interaction between forest and horizon
 bs.forest.horiz <- emmeans(mod.bs2, pairwise ~ forest*horizon, adjust = "tukey")
 mult.bs.forest.horiz <- CLD(bs.forest.horiz, alpha=0.05, Letters=letters, adjust="tukey", reversed = TRUE)
 plot.mult.bs.forest.horiz <- ggplot(mult.bs.forest.horiz, aes(x = horizon, y = emmean)) + 
@@ -180,8 +179,6 @@ plot.mult.bs.forest <- ggplot(mult.bs.forest, aes(x = forest, y = emmean)) +
   labs(x="Forest type", y= 'Base Sat. (%)')
 
 ## Arrange FOREST in one page
-## Note: Tukey post hoc analysis not included in any plots
-
 soil_forest<-ggarrange(plot.mult.ph.forest, plot.mult.cn.forest, 
                        plot.mult.tp.forest, plot.mult.bp.forest, 
                        plot.mult.ecec.forest, plot.mult.bs.forest,
@@ -195,14 +192,14 @@ soil_forest_horiz<-ggarrange(plot.mult.ph.forest.horiz, plot.mult.cn.forest.hori
 
 
 ### DEPTH by horizons ####
+## load libraries and data
 library(tidyr)
 library(dplyr)
 library(plyr)
 
-## load data
 soil_thickness <- read.csv("data/soil_thick.csv", sep = ";")
 
-## manipulate
+## Manipulate data
 thick <- gather(soil_thickness, Horizon, Thickness, -Forest, -Block, factor_key=TRUE)
 thick$Forest <- recode(thick$Forest, FT="Temperate", FM="Mixed",FB= "Boreal")
 thick$Forest <- factor(thick$Forest, c("Temperate", "Mixed", "Boreal"))

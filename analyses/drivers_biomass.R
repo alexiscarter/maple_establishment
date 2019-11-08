@@ -2,6 +2,7 @@
 ## and with soil characteristics as explanatory variables of performance
 ## using generalized linear mixed-effect models.
 
+## Load libraries and data
 library(tidyverse); theme_set(theme_bw())
 library(brms)
 library(brmstools)
@@ -21,7 +22,7 @@ colo_w_mod <- colo_as %>%
   subset(!colo_tot > 80) %>% # remove extreme values, id 124 32
   select("id", "total.w", "mean_arb", "mean_hyp", "mean_ves", "mean_endo", "mean_coil","colo_tot", "forest", "block", "treatment")
 
-## Model
+## Modeling
 mod.colo.gamm <- brm(formula = total.w ~ mean_hyp + (1|block),
                 data = colo_w_mod, family = Gamma(link="log"),
                 warmup = 1000, iter = 10000, chains = 4, thin = 10,
@@ -29,7 +30,7 @@ mod.colo.gamm <- brm(formula = total.w ~ mean_hyp + (1|block),
 mod.colo.gamm.1 <- update(mod.colo.gamm, iter = 50000) 
 summary(mod.colo.gamm.1, prob = 0.90, mc_se = TRUE, priors = TRUE)
 
-## Plot marginal effect
+## Plot the marginal effect
 plot.colo <- plot(marginal_effects(mod.colo.gamm.1),points=T)
 plot.colo$mean_hyp +
   labs(x= 'Root hyphal colonization (%)', y = "Dry mass (of survivors, g)")
@@ -55,7 +56,7 @@ mod.ir.hgamm.soil <- brm(formula = biomass ~ pH + CN + totalP + BrayP + ECEC + B
 mod.ir.hgamm.soil.1 <- update(mod.ir.hgamm.soil, iter = 50000) 
 summary(mod.ir.hgamm.soil.1, prob = 0.90, mc_se = TRUE, priors = TRUE)
 
-## Plot marginal effects
+## Plot the marginal effects
 fit.hgamm.soil.gg <- plot(marginal_effects(mod.ir.hgamm.soil.1),points=T, prob = 0.90, plot = FALSE)
 
 plot.tp <- fit.hgamm.soil.gg$totalP +

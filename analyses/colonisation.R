@@ -1,4 +1,4 @@
-# Analysis of the mycorrhizal colonisation on sugar maple seedlings
+## Analyses of the mycorrhizal colonisation on the roots of the sugar maple seedlings
 
 # Load packages and data ####
 library(ggplot2)
@@ -398,7 +398,6 @@ arb_4 <- arb_4 %>% subset(!treatment == "Untreated")
 ves_4 <- ves_4 %>% subset(!treatment == "Untreated")
 endo_4 <- endo_4 %>% subset(!treatment == "Untreated")
 
-
 ## Figures on observed data (Experiment 2) #### 
 soil_names <- c(Temperate = "Temperate soil origin", Mixed = "Mixed soil origin", Boreal = "Boreal soil origin")
 #### Hyphae
@@ -547,8 +546,7 @@ colo_endo_nir <- ggplot(endo_nir, mapping=aes(x= forest, y=colonisation, cex.mai
   labs(x = "Soil", y = "Colonization intensity\nby endophytes (%)") +
   theme_bw() + theme(axis.text.x = element_text(angle=45, vjust= 1, size = 10, hjust=1), axis.title = element_text(size=10), strip.text.x = element_text(size=10))
 
-
-## figures for the article
+## Figures in one page
 colo_hyp
 
 colo_all <- ggarrange(colo_arb_forest, colo_arb_treatment, colo_arb,
